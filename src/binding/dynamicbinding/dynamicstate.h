@@ -3,7 +3,7 @@
 #include <QString>
 #include <QSharedPointer>
 
-class BindingState
+class DynamicState
 {
 
 private:
@@ -13,9 +13,9 @@ private:
 
 public:
 
-    BindingState( QString name, QString value );
+    DynamicState( QString name, QString value );
     QString name();
     QString value();
 };
 
-typedef QSharedPointer< BindingState > BindingStatePtr;
+typedef QSharedPointer< DynamicState > DynamicStatePtr;

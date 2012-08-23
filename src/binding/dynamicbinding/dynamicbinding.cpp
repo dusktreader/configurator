@@ -14,7 +14,7 @@ DynamicBinding::DynamicBinding( QString var, QString name, QString description )
     /// @todo check that no other exists
 }
 
-void DynamicBinding::addState( BindingStatePtr state )
+void DynamicBinding::addState( DynamicStatePtr state )
 {
     _stateList << state;
 }
@@ -26,7 +26,7 @@ void DynamicBinding::setInitialIndex( int initialIndex )
 
 void DynamicBinding::printState( QTextStream& out, int stateIndex )
 {
-    BindingStatePtr state = _stateList[ stateIndex ];
+    DynamicStatePtr statePtr = _stateList[ stateIndex ];
     int backIndex = stateIndex == 0 ? _stateList.size() - 1 : stateIndex - 1;
     int nextIndex = stateIndex == _stateList.size() - 1 ? 0 : stateIndex + 1;
 
@@ -39,17 +39,17 @@ void DynamicBinding::printState( QTextStream& out, int stateIndex )
             .arg( _name )
             .arg( stateIndex )
             .arg( _var )
-            .arg( state->value() )
-            .arg( state->name() );
+            .arg( statePtr->value() )
+            .arg( statePtr->name() );
 
     QString message = "set %1_message_%2 \"ut_echo %3 selected\";";
     message = message
             .arg( _name )
             .arg( stateIndex )
-            .arg( state->name() );
+            .arg( statePtr->name() );
 
-    QString selector = "set %1_state_%2 \"set %1_back vstr %1_state_%3;set %1_next vstr %1_state_%4;set %1_action vstr %1_action_%2;vstr %1_message_%2\";";
-    selector = selector
+    QString state = "set %1_state_%2 \"set %1_back vstr %1_state_%3;set %1_next vstr %1_state_%4;set %1_action vstr %1_action_%2;vstr %1_message_%2\";";
+    state = state
             .arg( _name )
             .arg( stateIndex )
             .arg( backIndex )
@@ -57,7 +57,7 @@ void DynamicBinding::printState( QTextStream& out, int stateIndex )
 
     out << action << endl;
     out << message << endl;
-    out << selector << endl;
+    out << state << endl;
 }
 
 void DynamicBinding::print( QTextStream &out, QString key )
@@ -71,12 +71,17 @@ void DynamicBinding::print( QTextStream &out, QString key )
     QString binding = "bind %2 \"vstr %1_select\";";
     binding = binding.arg( _name ).arg( key );
 
-    out << "// " << _description << endl;
+    out << "// Begin " << _description << endl;
     out << endl;
     for( int i = 0; i < _stateList.size(); i++ )
+    {
         printState( out, i );
         out << endl;
+    }
     out << initial << endl;
     out << select << endl;
+    out << endl;
     out << binding << endl;
+    out << endl;
+    out << "// Finish " << _description << endl;
 }

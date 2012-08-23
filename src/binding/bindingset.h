@@ -1,7 +1,7 @@
 #pragma once
 
-#include "binding.h"
-#include "dynamicbinding.h"
+#include "binding/binding.h"
+#include "binding/dynamicbinding/dynamicbinding.h"
 
 class BindingSet
 {

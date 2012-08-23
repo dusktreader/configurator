@@ -24,8 +24,10 @@ void BindingSet::print( QTextStream& out )
     out << endl << endl << endl;
 
     foreach( QString key, _bindingMap.keys() )
+    {
         _bindingMap[key]->print( out, key );
         out << endl << endl << endl;
+    }
 
     out << "set initialize_all \"";
     foreach( QString name, DynamicBinding::dynamicBindingSet() )

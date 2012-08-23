@@ -2,7 +2,7 @@
 
 #include <QSharedPointer>
 
-#include "dynamicbinding.h"
+#include "binding/dynamicbinding/dynamicbinding.h"
 
 class FiniteStateBinding : public DynamicBinding
 {

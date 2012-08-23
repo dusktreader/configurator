@@ -6,5 +6,5 @@ FiniteStateBinding::FiniteStateBinding( QString var, QString name, QString descr
 
 void FiniteStateBinding::addState( QString name, QString value )
 {
-    _stateList << BindingStatePtr( new BindingState( name, value ) );
+    _stateList << DynamicStatePtr( new DynamicState( name, value ) );
 }

@@ -2,19 +2,8 @@
     included_modules += $$PWD
     message( "Including $$PWD" )
 
-    include( $$PWD/computeworker/computeworker.pri )
-    include( $$PWD/errors/errors.pri )
-    include( $$PWD/geometry/geometry.pri )
-    include( $$PWD/models/models.pri )
-    include( $$PWD/serializable/serializable.pri )
-    #include( $$PWD/utility/utility.pri )
-    include( $$PWD/video/video.pri )
-
-    HEADERS += \
-        $$PWD/trackpath.h \
+    include( $$PWD/binding/binding.pri )
 
     SOURCES += \
-        $$PWD/trackpath.cpp \
-
-
+        $$PWD/main.cpp \
 }

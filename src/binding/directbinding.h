@@ -1,6 +1,6 @@
 #pragma once
 
-#include "binding.h"
+#include "binding/binding.h"
 
 class DirectBinding : public Binding
 {

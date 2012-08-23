@@ -2,15 +2,15 @@
     included_modules += $$PWD
     message( "Including $$PWD" )
 
-    include( $$PWD/dynamicbinding/dynamicbinding.pri )
-
     HEADERS += \
-        $$PWD/bindingset.h \
-        $$PWD/binding.h \
-        $$PWD/directbinding.h \
-        
+        $$PWD/dynamicbinding.h \
+        $$PWD/finitestatebinding.h \
+        $$PWD/dynamicstate.h \
+        $$PWD/numericrangebinding.h \
+
     SOURCES += \
-        $$PWD/bindingset.cpp \
-        $$PWD/binding.cpp \
-        $$PWD/directbinding.cpp \
+        $$PWD/dynamicbinding.cpp \
+        $$PWD/finitestatebinding.cpp \
+        $$PWD/dynamicstate.cpp \
+        $$PWD/numericrangebinding.cpp \
 }

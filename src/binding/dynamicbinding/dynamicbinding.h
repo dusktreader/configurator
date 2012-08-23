@@ -5,8 +5,8 @@
 #include <QTextStream>
 #include <QSet>
 
-#include "binding.h"
-#include "bindingstate.h"
+#include "binding/binding.h"
+#include "binding/dynamicbinding/dynamicstate.h"
 
 class DynamicBinding : public Binding
 {
@@ -17,7 +17,7 @@ private:
 
 protected:
 
-    QVector< BindingStatePtr > _stateList;
+    QVector< DynamicStatePtr > _stateList;
     int _initialIndex;
 
     void printState( QTextStream& out, int stateIndex );
@@ -27,7 +27,7 @@ public:
     static QSet<QString> dynamicBindingSet();
 
     DynamicBinding( QString var, QString name, QString description );
-    void addState( BindingStatePtr state );
+    void addState( DynamicStatePtr state );
     void setInitialIndex( int initialIndex );
     virtual void print( QTextStream& out, QString key );
 };

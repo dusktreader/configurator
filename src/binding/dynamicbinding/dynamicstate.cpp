@@ -1,15 +1,15 @@
-#include "bindingstate.h"
+#include "dynamicstate.h"
 
-BindingState::BindingState( QString name, QString value )
+DynamicState::DynamicState( QString name, QString value )
     : _name( name ), _value( value )
 {}
 
-QString BindingState::name()
+QString DynamicState::name()
 {
     return _name;
 }
 
-QString BindingState::value()
+QString DynamicState::value()
 {
     return _value;
 }
