@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QSharedPointer>
+#include <QtXml/QDomElement>
 
 class DynamicState
 {
@@ -13,9 +14,16 @@ private:
 
 public:
 
-    DynamicState( QString name, QString value );
+    DynamicState();
+
+    void setName( QString name );
     QString name();
+
+    void setValue( QString value );
     QString value();
+
+    void read( QDomElement element );
+    void write( QDomElement element );
 };
 
 typedef QSharedPointer< DynamicState > DynamicStatePtr;

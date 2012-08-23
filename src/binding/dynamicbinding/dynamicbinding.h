@@ -11,10 +11,6 @@
 class DynamicBinding : public Binding
 {
 
-private:
-
-    static QSet<QString> _dynamicBindingSet;
-
 protected:
 
     QVector< DynamicStatePtr > _stateList;
@@ -24,12 +20,14 @@ protected:
 
 public:
 
-    static QSet<QString> dynamicBindingSet();
+    DynamicBinding();
 
-    DynamicBinding( QString var, QString name, QString description );
     void addState( DynamicStatePtr state );
     void setInitialIndex( int initialIndex );
+
     virtual void print( QTextStream& out, QString key );
+    virtual void read( QDomElement element );
+    virtual void write( QDomElement element );
 };
 
 typedef QSharedPointer< DynamicBinding > DynamicBindingPtr;

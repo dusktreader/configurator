@@ -11,7 +11,17 @@ protected:
 
 public:
 
-    DirectBinding( QString var, QString name, QString description );
+    DirectBinding();
+
+    void setValue( QString value );
+    QString value();
 
     virtual void print( QTextStream &out, QString key );
+    virtual void read( QDomElement element );
+    virtual void write( QDomElement element );
+
+    virtual BindingPtr manufacture();
+    virtual QString className();
 };
+
+typedef QSharedPointer< DirectBinding > DirectBindingPtr;

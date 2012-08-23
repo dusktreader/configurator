@@ -1,8 +1,12 @@
 #include "numericrangebinding.h"
 
-NumericRangeBinding::NumericRangeBinding( QString var, QString name, QString description )
-    : DynamicBinding( var, name, description ), _lo(0), _hi(0), _step(0)
-{}
+NumericRangeBinding::NumericRangeBinding()
+    : DynamicBinding()
+{
+    _lo = 0.0;
+    _hi = 0.0;
+    _step = 0.0;
+}
 
 void NumericRangeBinding::setRangeBySubdivision( double lo, double hi, int subdivisions )
 {
@@ -27,9 +31,39 @@ void NumericRangeBinding::setRangeByStep( double lo, double hi, double step )
         /// @todo check precision for numeric bindings
         QString name = QString( "%1 %2" ).arg( _name ).arg( val );
         QString value = QString::number( val, 'f', 4 );
-        DynamicStatePtr state( new DynamicState( name, value ) );
+        DynamicStatePtr state( new DynamicState() );
+        state->setName( name );
+        state->setValue( value );
         addState( state );
     }
 }
 
+void NumericRangeBinding::read( QDomElement element )
+{
+    DynamicBinding::read( element );
+    /// @todo check bad values
+    double lo = element.attribute( "lo" ).toDouble();
+    double hi = element.attribute( "hi" ).toDouble();
+    double step = element.attribute( "step" ).toDouble();
+    setRangeByStep( lo, hi, step );
+}
 
+void NumericRangeBinding::write( QDomElement element )
+{
+    element.setAttribute( "lo", _lo );
+    element.setAttribute( "hi", _hi );
+    element.setAttribute( "step", _step );
+    DynamicBinding::write( element );
+}
+
+
+
+BindingPtr NumericRangeBinding::manufacture()
+{
+    return BindingPtr( new NumericRangeBinding() );
+}
+
+QString NumericRangeBinding::className()
+{
+    return "NumericRangeBinding";
+}

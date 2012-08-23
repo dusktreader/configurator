@@ -6,6 +6,9 @@ BindingSet::BindingSet()
 void BindingSet::addBinding( QString key, BindingPtr binding )
 {
     _bindingMap[key] = binding;
+    /// @todo push this down to the binding object?
+    if( binding->resetable() )
+        _resetGroup.insert( binding );
 }
 
 void BindingSet::print( QTextStream& out )
@@ -30,10 +33,88 @@ void BindingSet::print( QTextStream& out )
     }
 
     out << "set initialize_all \"";
-    foreach( QString name, DynamicBinding::dynamicBindingSet() )
-        out << "vstr " << name << "_initial;";
+    foreach( BindingPtr binding, _resetGroup )
+        out << "vstr " << binding->name() << "_initial;";
     out << "\";" << endl;
     out << "vstr initialze_all;" << endl;
 
     /// @todo bind resetAll!
+}
+
+void BindingSet::read( QDomElement element )
+{
+    _bindingMap.clear();
+    _resetGroup.clear();
+
+    /// @todo assert validation
+
+    QDomNode node = element.firstChild();
+    while( !node.isNull() )
+    {
+        QDomElement bindElement = node.toElement();
+        QString key  = bindElement.attribute( "key" );
+        QString type = bindElement.attribute( "type" );
+
+        /// @todo verify that biding is in the factory map
+        BindingPtr binding = Binding::manufacture( type );
+        binding->read( bindElement );
+        addBinding( key, binding );
+        if( binding->resetable() )
+            _resetGroup.insert( binding );
+
+        node = node.nextSibling();
+    }
+}
+
+void BindingSet::write( QDomElement& element )
+{
+    foreach( QString key, _bindingMap.keys() )
+    {
+        BindingPtr binding = _bindingMap[ key ];
+        QDomElement childElement = element.ownerDocument().createElement( "binding" );
+        childElement.setAttribute( "key", key );
+        childElement.setAttribute( "type", binding->className() );
+        binding->write( childElement );
+        element.appendChild( childElement );
+    }
+}
+
+void BindingSet::dump( QString fileName )
+{
+    QFileInfo fileInfo( fileName );
+    /// @todo checks
+
+    QFile dumpFile( fileInfo.absoluteFilePath() );
+    dumpFile.open( QIODevice::WriteOnly | QIODevice::Text );
+    QTextStream out( &dumpFile );
+    print( out );
+}
+
+
+void BindingSet::load( QString fileName )
+{
+    QFileInfo fileInfo( fileName );
+    /// @todo checks
+
+    QFile loadFile( fileInfo.absoluteFilePath() );
+    loadFile.open( QIODevice::ReadOnly | QIODevice::Text );
+    QDomDocument doc( "binding_doc" );
+    doc.setContent( &loadFile );
+    QDomElement rootElement = doc.firstChildElement();
+    read( rootElement );
+}
+
+void BindingSet::save( QString fileName )
+{
+    QDomDocument doc( "binding_doc" );
+    QDomElement rootElement = doc.createElement( "root" );
+    write( rootElement );
+    doc.appendChild( rootElement );
+
+    /// @todo checks
+    QFileInfo fileInfo( fileName );
+    QFile saveFile( fileInfo.absoluteFilePath() );
+    saveFile.open( QIODevice::WriteOnly | QIODevice::Text );
+    QTextStream out( &saveFile );
+    out << doc.toString() << endl;
 }

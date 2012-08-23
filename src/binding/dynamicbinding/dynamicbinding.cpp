@@ -1,17 +1,9 @@
 #include "dynamicbinding.h"
 
- QSet<QString> DynamicBinding::_dynamicBindingSet = QSet<QString>();
-
-QSet< QString > DynamicBinding::dynamicBindingSet()
+DynamicBinding::DynamicBinding()
+    : Binding()
 {
-    return _dynamicBindingSet;
-}
-
-DynamicBinding::DynamicBinding( QString var, QString name, QString description )
-    : Binding( var, name, description ), _initialIndex( 0 )
-{
-    _dynamicBindingSet << name;
-    /// @todo check that no other exists
+    _initialIndex = 0;
 }
 
 void DynamicBinding::addState( DynamicStatePtr state )
@@ -84,4 +76,17 @@ void DynamicBinding::print( QTextStream &out, QString key )
     out << binding << endl;
     out << endl;
     out << "// Finish " << _description << endl;
+}
+
+void DynamicBinding::read( QDomElement element )
+{
+    Binding::read( element );
+    QString name = element.attribute( "name" );
+    setName( name );
+}
+
+void DynamicBinding::write( QDomElement element )
+{
+    element.setAttribute( "name", _name );
+    Binding::write( element );
 }

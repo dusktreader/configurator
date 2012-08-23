@@ -16,10 +16,17 @@ protected:
 
 public:
 
-    NumericRangeBinding( QString var, QString name, QString description );
+    NumericRangeBinding();
 
     void setRangeBySubdivision( double lo, double hi, int subdivisions );
     void setRangeByStep( double lo, double hi, double step );
+
+
+    virtual void read( QDomElement element );
+    virtual void write( QDomElement element );
+
+    virtual BindingPtr manufacture();
+    virtual QString className();
 };
 
 typedef QSharedPointer< NumericRangeBinding > NumericRangeBindingPtr;
