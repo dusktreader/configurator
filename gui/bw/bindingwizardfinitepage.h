@@ -10,11 +10,13 @@ class BindingWizardFinitePage;
 class BindingWizardFinitePage : public QWizardPage
 {
     Q_OBJECT
-    
+
 public:
     explicit BindingWizardFinitePage(QWidget *parent = 0);
     ~BindingWizardFinitePage();
-    
+
+    virtual bool validatePage();
+
 private:
     Ui::BindingWizardFinitePage *ui;
 };

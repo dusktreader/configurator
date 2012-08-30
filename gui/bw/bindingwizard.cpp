@@ -13,6 +13,8 @@ BindingWizard::BindingWizard(QWidget *parent) :
     setPage(  FINITE_PAGE, new BindingWizardFinitePage     );
     setPage( NUMERIC_PAGE, new BindingWizardNumericalPage  );
 
+    setStartId( INTRO_PAGE );
+
     lastId = -1;
 }
 

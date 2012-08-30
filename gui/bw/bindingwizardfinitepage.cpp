@@ -6,9 +6,17 @@ BindingWizardFinitePage::BindingWizardFinitePage(QWidget *parent) :
     ui(new Ui::BindingWizardFinitePage)
 {
     ui->setupUi(this);
+
+    registerField( "finite.stateTable", ui->stateTable );
 }
 
 BindingWizardFinitePage::~BindingWizardFinitePage()
 {
     delete ui;
+}
+
+BindingWizardFinitePage::validatePage()
+{
+    if( ui->stateTable->rowCount() == 0 )
+        return false;
 }
